@@ -310,7 +310,7 @@ public abstract class S_EnemyBaseController : MonoBehaviour
     // 進行方向から向きを更新する
     private void UpdateFacingFromVector(Vector2 dir)
     {
-        // 縦移動と横移動、どちらの勢いが強いか判定 (FacingDirectionは互換性のために計算だけしておく)
+        // 縦移動と横移動、どちらの勢いが強いか判定
         if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
         {
             if (dir.x > 0) FacingDirection = Facing.Right;
@@ -326,23 +326,15 @@ public abstract class S_EnemyBaseController : MonoBehaviour
         ApplyRotation(dir);
     }
 
-    // 実際に回転させる処理 (Animator変更廃止 -> スプライト回転)
+    // 実際に回転させる処理
     private void ApplyRotation(Vector2 dir)
     {
         if (_weaponPivot == null) return;
-
-        // フリップ等はリセット（回転で表現するため）
-        // _weaponSprite.flipX = false;
-        // _weaponSprite.flipY = false;
-
-        // 角度計算 (Right=0度基準のAtan2 + 90度補正でDown=0度基準に合わせる)
+        // 角度計算
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, angle + 90f);
-
-        // AnimatorへのFacing送信を廃止
     }
 
-    // 0:前(下), 1:後(上), 2:右, 3:左
     public Vector2 GetFacingVector()
     {
         switch (FacingDirection)
